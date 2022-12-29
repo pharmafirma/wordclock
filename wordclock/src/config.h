@@ -50,6 +50,8 @@
  * -------
  * 1: de-DE:     german
  * 2: de-DE_alt: german alternative
+ * 3: de_DE_s: "Es ist" only at full and half hour
+ * 4: de_DE_s1: "Es ist" only at full and half hour + Minutes in Last row (new front Plate De_de_S1)
  */
 #ifndef GRID_LANGUAGE
   #define GRID_LANGUAGE de_DE
@@ -65,6 +67,10 @@
  */
 #ifndef GRID_SINGLE_MINUTES
   #define GRID_SINGLE_MINUTES 1
+#endif
+
+#ifndef EXTRA_LEDS
+  #define EXTRA_LEDS 4
 #endif
 
 /* Data PIN, where the LED strip is connected to */
@@ -96,6 +102,7 @@ class Config {
     static clock_time_t dnd_start;
     static clock_time_t dnd_end;
     static String ntp;
+    static bool healthcheck;
 
     static void save();
     static void load();

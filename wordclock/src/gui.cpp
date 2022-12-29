@@ -43,11 +43,11 @@ String Gui::getTimeForm() {
   content += "<label>Helligkeit</label>";
   content += "<select name=\"brightness\">";
 
-  for (double brightness_percnt = 0.0; brightness_percnt < Led::getMaxBrightnessPercnt(); brightness_percnt+=0.1) {
+  for (double brightness_percnt = 0.0; brightness_percnt < Led::getMaxBrightnessPercnt(); brightness_percnt+=0.05) {
     String label = String((int) (brightness_percnt * 100 + 0.5)) + "&percnt;"; // adding 0.5 for rounding.
     content += Gui::htmlOption(label, String(brightness_percnt), String(Config::brightness));
   }
-  if (Led::getMaxBrightnessPercnt() < 1.0) { // show maximum brightness percentage between the 10% steps.
+  if (Led::getMaxBrightnessPercnt() < 1.0) { // show maximum brightness percentage between the 5% steps.
     String label = String((int) (Led::getMaxBrightnessPercnt() * 100 + 0.5)) + "&percnt;";
     content += Gui::htmlOption(label, String(Led::getMaxBrightnessPercnt()), String(Config::brightness));
   }
@@ -189,7 +189,7 @@ String Gui::createNav() {
 String Gui::createScript() {
   String content = "";
 
-  content += "window.onload=function(){var e=function(e){return document.getElementById(e)},n=document.querySelector('nav'),t=n.querySelectorAll('li'),d=document.querySelectorAll('main section'),i=e('save'),a=e('reset_wifi'),o=e('reset_wifi_message'),c='color',l={fg:e('fg'),bg:e('bg'),power_supply:e('power_supply'),brightness:e('brightness'),tzAuto:e('tz_auto'),tz:e('tz'),ntp:e('ntp'),dndActive:e('dnd_active'),dndSH:e('dnd_s_h'),dndSM:e('dnd_s_m'),dndEH:e('dnd_e_h'),dndEM:e('dnd_e_m')};t.forEach(function(n){n.onclick=function(n){if('li'==n.currentTarget.tagName.toLowerCase()&&n.currentTarget.hasAttribute('name')){c=n.currentTarget.getAttribute('name');for(var a=0;a<t.length;a++)t[a].classList.remove('active');n.currentTarget.classList.add('active');for(a=0;a<d.length;a++)d[a].classList.remove('active');i.style.display='wifi'==c?'none':'inline-block',e(c).classList.add('active')}}}),i.onclick=function(e){var n={},t='/api/'+c;if('color'==c)n.fg=l.fg.value,n.bg=l.bg.value,n.power_supply=l.power_supply.value,n.brightness=l.brightness.value;else if('time'==c)n.tz_auto=l.tzAuto.value,n.tz=l.tz.value,n.ntp=l.ntp.value;else{if('dnd'!=c)return;n.dnd_active=l.dndActive.value,n.dnd_start_hour=l.dndSH.value,n.dnd_start_minute=l.dndSM.value,n.dnd_end_hour=l.dndEH.value,n.dnd_end_minute=l.dndEM.value}fetch(t,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(n)}).then(function(e){})},a.onclick=function(e){fetch('/api/wifi',{method:'DELETE',headers:{'Content-Type':'application/json'},body:''}).then(function(e){}),n.classList.add('disabled'),a.style.display='none',o.style.display='block'}};";
+  content += "window.onload=function(){var e=function(e){return document.getElementById(e)},n=document.querySelector('nav'),t=n.querySelectorAll('li'),d=document.querySelectorAll('main section'),i=e('save'),a=e('reset_wifi'),o=e('reset_wifi_message'),c='color',l={fg:e('fg'),bg:e('bg'),power_supply:e('power_supply'),brightness:e('brightness'),healthcheck:e('healthcheck'),tzAuto:e('tz_auto'),tz:e('tz'),ntp:e('ntp'),dndActive:e('dnd_active'),dndSH:e('dnd_s_h'),dndSM:e('dnd_s_m'),dndEH:e('dnd_e_h'),dndEM:e('dnd_e_m')};t.forEach((function(n){n.onclick=function(n){if('li'==n.currentTarget.tagName.toLowerCase()&&n.currentTarget.hasAttribute('name')){c=n.currentTarget.getAttribute('name');for(var a=0;a<t.length;a++)t[a].classList.remove('active');for(n.currentTarget.classList.add('active'),a=0;a<d.length;a++)d[a].classList.remove('active');i.style.display='wifi'==c?'none':'inline-block',e(c).classList.add('active')}}})),i.onclick=function(e){var n={},t='/api/'+c;if('color'==c)n.fg=l.fg.value,n.bg=l.bg.value,n.power_supply=l.power_supply.value,n.brightness=l.brightness.value,n.healthcheck=l.healthcheck.value;else if('time'==c)n.tz_auto=l.tzAuto.value,n.tz=l.tz.value,n.ntp=l.ntp.value;else{if('dnd'!=c)return;n.dnd_active=l.dndActive.value,n.dnd_start_hour=l.dndSH.value,n.dnd_start_minute=l.dndSM.value,n.dnd_end_hour=l.dndEH.value,n.dnd_end_minute=l.dndEM.value}fetch(t,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(n)}).then((function(e){}))},a.onclick=function(e){fetch('/api/wifi',{method:'DELETE',headers:{'Content-Type':'application/json'},body:''}).then((function(e){})),n.classList.add('disabled'),a.style.display='none',o.style.display='block'}};";
 
   return content;
 }
@@ -207,16 +207,21 @@ String Gui::createContent() {
   content += "<label>Helligkeit</label>";
   content += "<select id=\"brightness\">";
 
-  for (double brightness_percnt = 0.0; brightness_percnt < Led::getMaxBrightnessPercnt(); brightness_percnt+=0.1) {
+  for (double brightness_percnt = 0.0; brightness_percnt < Led::getMaxBrightnessPercnt(); brightness_percnt+=0.05) {
     String label = String((int) (brightness_percnt * 100 + 0.5)) + "&percnt;"; // adding 0.5 for rounding.
     content += Gui::htmlOption(label, String(brightness_percnt), String(Config::brightness));
   }
-  if (Led::getMaxBrightnessPercnt() < 1.0) { // show maximum brightness percentage between the 10% steps.
+  if (Led::getMaxBrightnessPercnt() < 1.0) { // show maximum brightness percentage between the 5% steps.
     String label = String((int) (Led::getMaxBrightnessPercnt() * 100 + 0.5)) + "&percnt;";
     content += Gui::htmlOption(label, String(Led::getMaxBrightnessPercnt()), String(Config::brightness));
   }
 
   content += "</select>";
+  content += "<div><label>LED check bei Start durchführen</label><select id=\"healthcheck\">";
+  content += Gui::htmlOption("Inaktiv", String(0), String(Config::healthcheck));
+  content += Gui::htmlOption("Aktiv", String(1), String(Config::healthcheck));
+  content += "</select></div>";
+
   content += "</div>";
   content += "</section>";
 
