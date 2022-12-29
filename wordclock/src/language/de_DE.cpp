@@ -20,7 +20,7 @@ void Grid_de_DE::setTime(int hour, int minute) {
 
 	return;
   }
-
+  
   int singleMinute = minute % 5;
   int hourLimit = 6;
 
@@ -57,14 +57,9 @@ void Grid_de_DE::setTime(int hour, int minute) {
 	}
   }
 
-  if(GRID_SINGLE_MINUTES == 1) {
-	// single minutes
-	for(int s = (NUM_LEDS - 4); s < (NUM_LEDS - 4 + singleMinute); s++) {
-	  Led::ids[s].setRGB(Config::color_fg.r, Config::color_fg.g, Config::color_fg.b);
-	}
-  } else {
-	for(int s = 0; s < singleMinute; s++) {
-	  Led::ids[s].setRGB(Config::color_fg.r, Config::color_fg.g, Config::color_fg.b);
+  for(int sm = 0; sm < singleMinute; sm++) {
+	if(Grid_de_DE::time_single_minutes[sm] >= 0) {
+	  Led::ids[Led::getLedId(Grid_de_DE::time_single_minutes[sm])].setRGB(Config::color_fg.r, Config::color_fg.g, Config::color_fg.b);
 	}
   }
 
@@ -72,34 +67,36 @@ void Grid_de_DE::setTime(int hour, int minute) {
   FastLED.show();
 }
 
-int Grid_de_DE::time_it_is[5] = {0, 1, 3, 4, 5}; // es ist
+int Grid_de_DE::time_it_is[5] = {14, 15, 17, 18, 19}; // es ist
 
 int Grid_de_DE::time_minutes[12][12] = {
-  {107, 108, 109,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1}, // uhr
-  {  7,   8,   9,  10,  35,  36,  37,  38,  -1,  -1,  -1,  -1}, // fünf nach
-  { 11,  12,  13,  14,  35,  36,  37,  38,  -1,  -1,  -1,  -1}, // zehn nach
-  { 26,  27,  28,  29,  30,  31,  32,  35,  36,  37,  38,  -1}, // viertel nach
-  { 15,  16,  17,  18,  19,  20,  21,  35,  36,  37,  38,  -1}, // zwanzig nach
-  {  7,   8,   9,  10,  39,  40,  41,  44,  45,  46,  47,  -1}, // fünf vor halb
-  { 44,  45,  46,  47,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1}, // halb
-  {  7,   8,   9,  10,  35,  36,  37,  38,  44,  45,  46,  47}, // fünf nach halb
-  { 15,  16,  17,  18,  19,  20,  21,  39,  40,  41,  -1,  -1}, // zwanzig vor
-  { 26,  27,  28,  29,  30,  31,  32,  39,  40,  41,  -1,  -1}, // viertel vor
-  { 11,  12,  13,  14,  39,  40,  41,  -1,  -1,  -1,  -1,  -1}, // zehn vor
-  {  7,   8,   9,  10,  39,  40,  41,  -1,  -1,  -1,  -1,  -1}  // fünf vor
+  {139, 140, 141,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1}, // uhr
+  { 21,  22,  23,  24,  55,  56,  57,  58,  -1,  -1,  -1,  -1}, // fünf nach
+  { 27,  28,  29,  30,  55,  56,  57,  58,  -1,  -1,  -1,  -1}, // zehn nach
+  { 44,  45,  46,  47,  48,  49,  50,  55,  56,  57,  58,  -1}, // viertel nach
+  { 31,  32,  33,  34,  35,  36,  37,  55,  56,  57,  58,  -1}, // zwanzig nach
+  { 21,  22,  23,  24,  59,  60,  61,  66,  67,  68,  69,  -1}, // fünf vor halb
+  { 66,  67,  68,  69,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1}, // halb
+  { 21,  22,  23,  24,  55,  56,  57,  58,  66,  67,  68,  69}, // fünf nach halb
+  { 31,  32,  33,  34,  35,  36,  37,  59,  60,  61,  -1,  -1}, // zwanzig vor
+  { 44,  45,  46,  47,  48,  49,  50,  59,  60,  61,  -1,  -1}, // viertel vor
+  { 27,  28,  29,  30,  59,  60,  61,  -1,  -1,  -1,  -1,  -1}, // zehn vor
+  { 21,  22,  23,  24,  59,  60,  61,  -1,  -1,  -1,  -1,  -1}  // fünf vor
 };
 
 int Grid_de_DE::time_hours[12][6] = {
-  { 49,  50,  51,  52,  53,  -1}, // zwölf
-  { 57,  58,  59,  60,  -1,  -1}, // eins
-  { 55,  56,  57,  58,  -1,  -1}, // zwei
-  { 67,  68,  69,  70,  -1,  -1}, // drei
-  { 84,  85,  86,  87,  -1,  -1}, // vier
-  { 73,  74,  75,  76,  -1,  -1}, // fünf
-  {100, 101, 102, 103, 104,  -1}, // sechs
-  { 60,  61,  62,  63,  64,  65}, // sieben
-  { 89,  90,  91,  92,  -1,  -1}, // acht
-  { 80,  81,  82,  83,  -1,  -1}, // neun
-  { 93,  94,  95,  96,  -1,  -1}, // zehn
-  { 77,  78,  79,  -1,  -1,  -1}  // elf
+  { 71,  72,  73,  74,  75,  -1}, // zwölf
+  { 81,  82,  83,  84,  -1,  -1}, // eins
+  { 79,  80,  81,  82,  -1,  -1}, // zwei
+  { 93,  94,  95,  96,  -1,  -1}, // drei
+  {112, 113, 114, 115,  -1,  -1}, // vier
+  { 99, 100, 101, 102,  -1,  -1}, // fünf
+  {132, 133, 134, 135, 136,  -1}, // sechs
+  { 84,  85,  86,  87,  88,  89}, // sieben
+  {119, 120, 121, 122,  -1,  -1}, // acht
+  {108, 109, 110, 111,  -1,  -1}, // neun
+  {123, 124, 125, 126,  -1,  -1}, // zehn
+  {105, 106, 107,  -1,  -1,  -1}  // elf
 };
+
+int Grid_de_DE::time_single_minutes[4] = {156, 0, 12, 168};

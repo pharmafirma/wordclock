@@ -5,7 +5,7 @@
  * 10: 10 rows
  * 11: 11 rows
  */
-#define GRID_ROWS 11
+#define GRID_ROWS 13
 
 /* Grid cols
  * 
@@ -13,7 +13,7 @@
  * ------- 
  * 11: 11 cols
  */
-#define GRID_COLS 11
+#define GRID_COLS 13
 
 /* Postition of first LED  
  *   
